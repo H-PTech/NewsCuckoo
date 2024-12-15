@@ -3,11 +3,12 @@ package com.hnptech.stocknewscuckoo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+
 @SpringBootApplication
-public class StocknewscuckooApplication {
+public class StockNewsCuckooApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(StocknewscuckooApplication.class, args);
+		SpringApplication.run(StockNewsCuckooApplication.class, args);
 	}
 
 }
