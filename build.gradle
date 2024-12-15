@@ -37,6 +37,11 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	// 텔레그램 의존성 추가
+	implementation 'org.telegram:telegrambots-client:8.0.0'
+	implementation 'org.telegram:telegrambots-springboot-longpolling-starter:8.0.0'
+
 }
 
 dependencyManagement {
