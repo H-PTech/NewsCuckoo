@@ -17,10 +17,11 @@ import org.telegram.telegrambots.meta.generics.TelegramClient;
 
 @Slf4j
 @Component
-public class TelegramNotifier implements SpringLongPollingBot, LongPollingSingleThreadUpdateConsumer,Notifier {
+public class TelegramNotifier implements SpringLongPollingBot,
+		LongPollingSingleThreadUpdateConsumer, Notifier {
 
-	private String token;
-	private String chatId;
+	private final String token;
+	private final String chatId;
 
 	private final TelegramClient telegramClient;
 
@@ -42,6 +43,7 @@ public class TelegramNotifier implements SpringLongPollingBot, LongPollingSingle
 		return this;
 	}
 
+	// TODO : 만약 사용자가 채팅을 이용한 메시지가 필요할때 기능 구현
 	@Override
 	public void consume(Update update) {
 		// 메시지 처리
@@ -59,7 +61,7 @@ public class TelegramNotifier implements SpringLongPollingBot, LongPollingSingle
 		try {
 			telegramClient.execute(sendMessage);
 		} catch (TelegramApiException e) {
-			e.printStackTrace();
+			log.warn(e.getMessage());
 		}
 	}
 

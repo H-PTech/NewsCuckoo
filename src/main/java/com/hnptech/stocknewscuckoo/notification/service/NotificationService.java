@@ -4,5 +4,5 @@ import com.hnptech.stocknewscuckoo.notification.model.News;
 
 public interface NotificationService {
 
-	public void sendNotification(News news);
+	void sendNotification(News news);
 }

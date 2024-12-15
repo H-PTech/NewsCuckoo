@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 public class News {
 
 	private String title;
+
 	private String url;
+
 	private String publishedAt;
-
-
 }

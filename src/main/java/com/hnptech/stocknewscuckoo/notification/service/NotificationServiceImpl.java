@@ -3,7 +3,6 @@ package com.hnptech.stocknewscuckoo.notification.service;
 import com.hnptech.stocknewscuckoo.notification.converter.service.TimeConverterService;
 import com.hnptech.stocknewscuckoo.notification.model.News;
 import com.hnptech.stocknewscuckoo.notification.model.response.ConvertedNews;
-import com.hnptech.stocknewscuckoo.notification.model.response.ConvertedNews.ConvertedNewsBuilder;
 import com.hnptech.stocknewscuckoo.notification.notifier.Notifier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +14,7 @@ public class NotificationServiceImpl implements NotificationService {
 	private final Notifier notifier;
 	private final TimeConverterService timeConverter;
 
+	// TODO : 한글 제목 변환
 	@Override
 	public void sendNotification(News news) {
 		ConvertedNews convertedNews = ConvertedNews.builder()
@@ -25,6 +25,5 @@ public class NotificationServiceImpl implements NotificationService {
 				.build();
 
 		notifier.sendNotification(convertedNews.toString());
-
 	}
 }

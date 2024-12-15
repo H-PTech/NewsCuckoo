@@ -1,6 +1,5 @@
 package com.hnptech.stocknewscuckoo.notification.model.response;
 
-import jakarta.persistence.Entity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -14,7 +13,7 @@ public class ConvertedNews {
 
 	@Builder
 	public ConvertedNews(String koreanTitle, String koreanTime, String url) {
-		this.koreanTitle = koreanTime;
+		this.koreanTitle = koreanTitle;
 		this.koreanTime = koreanTime;
 		this.url = url;
 	}
