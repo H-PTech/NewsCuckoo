@@ -42,6 +42,10 @@ dependencies {
 	implementation 'org.telegram:telegrambots-client:8.0.0'
 	implementation 'org.telegram:telegrambots-springboot-longpolling-starter:8.0.0'
 
+	// HTML 파싱
+	implementation 'org.jsoup:jsoup:1.18.3'
+
+
 }
 
 dependencyManagement {

@@ -1,7 +1,7 @@
 package com.hnptech.stocknewscuckoo.notification.service;
 
 import com.hnptech.stocknewscuckoo.notification.converter.service.TimeConverterService;
-import com.hnptech.stocknewscuckoo.notification.model.News;
+import com.hnptech.stocknewscuckoo.news.model.News;
 import com.hnptech.stocknewscuckoo.notification.model.response.ConvertedNews;
 import com.hnptech.stocknewscuckoo.notification.notifier.Notifier;
 import lombok.RequiredArgsConstructor;
