@@ -1,6 +1,7 @@
 package com.hnptech.stocknewscuckoo.crawler.service;
 
-import static com.hnptech.stocknewscuckoo.crawler.constants.NewsSource.FINVIZ;
+import static com.hnptech.stocknewscuckoo.crawler.constants.NewsSource.FINVIZ_MARKET;
+import static com.hnptech.stocknewscuckoo.crawler.constants.NewsSource.FINVIZ_STOCK;
 
 import com.hnptech.stocknewscuckoo.article.model.Article;
 import com.hnptech.stocknewscuckoo.article.service.ArticleService;
@@ -26,13 +27,24 @@ public class FinvizCrawlerService implements NewsCrawlerService {
 	private final ArticleService articleService;
 	private final TimeConverter timeConverter;
 
+	//주식 뉴스 크롤링
 	@Override
 	@Scheduled(fixedRate = 60000)
-	public void crawlLatestNews() {
-		log.info("크롤링 시작");
+	public void crawlLatestStockNews() {
+		crawlNews(FINVIZ_STOCK.getUrl(), FINVIZ_STOCK.getCategory());
+	}
+  
+  // 시장 뉴스 크롤링
+	@Override
+	@Scheduled(fixedRate = 60000)
+	public void crawlLatestMarketNews() {
+		crawlNews(FINVIZ_MARKET.getUrl(), FINVIZ_MARKET.getCategory());
+	}
 
+	private void crawlNews(String url, String newsType) {
+		log.info("{} 뉴스 크롤링 시작", newsType);
 		try {
-			Document document = Jsoup.connect(FINVIZ.getUrl()).get();
+			Document document = Jsoup.connect(url).get();
 			List<Article> articles = extractArticles(document);
 
 			articles.forEach(article -> {
@@ -40,8 +52,9 @@ public class FinvizCrawlerService implements NewsCrawlerService {
 			});
 
 			articleService.saveArticles(articles);
+
 		} catch (Exception e) {
-			log.error("Finviz 뉴스페이지 Fetch 실패", e);
+			log.error("Finviz {} 뉴스페이지 Fetch 실패", newsType, e);
 		}
 	}
 
@@ -57,17 +70,13 @@ public class FinvizCrawlerService implements NewsCrawlerService {
 				String publishedAt = row.select("td.news_date-cell").text();
 				String url = row.select("td.news_link-cell a").attr("abs:href");
 
+        //TODO : STOCK 과 MARKET의 발행시간 표기법이 다름
 				if (!title.isEmpty() && !publishedAt.isEmpty() && !url.isEmpty()) {
-
-					// 오늘 날짜의 시간의 기사만 -> 지난 기사는 추출 X
-					if (isTimeFormat(publishedAt)) {
-						articles.add(Article.builder()
-								.title(title)
-								.url(url)
-								// HH:mm -> yyyy-MM-dd HH:mm
-								.publishedAt(timeConverter.usTimeToFormattedUSDate(publishedAt))
-								.build());
-					}
+					articles.add(Article.builder()
+							.title(title)
+							.url(url)
+							.publishedAt(publishedAt)
+							.build());
 				}
 			} catch (Exception e) {
 				log.warn("기사 추출 실패", e);
