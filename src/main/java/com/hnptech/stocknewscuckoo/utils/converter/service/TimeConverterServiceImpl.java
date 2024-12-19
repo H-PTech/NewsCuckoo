@@ -1,8 +1,8 @@
-package com.hnptech.stocknewscuckoo.notification.converter.service;
+package com.hnptech.stocknewscuckoo.utils.converter.service;
 
-import static com.hnptech.stocknewscuckoo.notification.converter.constants.TimeConversionConstants.US_TIME_ZONE;
+import static com.hnptech.stocknewscuckoo.utils.converter.constants.TimeConversionConstants.US_TIME_ZONE;
 
-import com.hnptech.stocknewscuckoo.notification.converter.constants.TimeConversionConstants;
+import com.hnptech.stocknewscuckoo.utils.converter.constants.TimeConversionConstants;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
