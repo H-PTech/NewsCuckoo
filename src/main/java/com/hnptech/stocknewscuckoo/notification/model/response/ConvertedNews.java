@@ -19,12 +19,10 @@ public class ConvertedNews {
 		this.url = url;
 	}
 
-
 	@Override
 	public String toString() {
 		return "제목: " + koreanTitle + "\n" +
 				"발행 시간: " + koreanTime + "\n" +
 				"Link: " + url;
 	}
-
 }

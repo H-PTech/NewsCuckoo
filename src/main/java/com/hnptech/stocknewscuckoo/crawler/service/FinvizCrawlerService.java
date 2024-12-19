@@ -3,7 +3,6 @@ package com.hnptech.stocknewscuckoo.crawler.service;
 import static com.hnptech.stocknewscuckoo.crawler.constants.NewsSource.FINVIZ;
 
 import com.hnptech.stocknewscuckoo.article.model.Article;
-import com.hnptech.stocknewscuckoo.article.repository.ArticleRepository;
 import com.hnptech.stocknewscuckoo.article.service.ArticleService;
 import com.hnptech.stocknewscuckoo.utils.converter.service.TimeConverter;
 import java.text.ParseException;
