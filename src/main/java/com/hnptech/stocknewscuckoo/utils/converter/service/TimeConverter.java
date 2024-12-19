@@ -6,4 +6,6 @@ public interface TimeConverter {
 	LocalDateTime convertUSTimeToKoreaTime(LocalDateTime usTime);
 
 	LocalDateTime usTimeToFormattedUSDate(String usTime);
+
+	LocalDateTime convertUsRelativeTimeToAbsoluteTime(String usTime);
 }

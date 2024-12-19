@@ -5,9 +5,11 @@ import static com.hnptech.stocknewscuckoo.crawler.constants.NewsSource.FINVIZ_ST
 
 import com.hnptech.stocknewscuckoo.article.model.Article;
 import com.hnptech.stocknewscuckoo.article.service.ArticleService;
+import com.hnptech.stocknewscuckoo.utils.converter.constants.TimeZones;
 import com.hnptech.stocknewscuckoo.utils.converter.service.TimeConverter;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -27,16 +29,14 @@ public class FinvizCrawlerService implements NewsCrawlerService {
 	private final ArticleService articleService;
 	private final TimeConverter timeConverter;
 
-	//주식 뉴스 크롤링
 	@Override
 	@Scheduled(fixedRate = 60000)
 	public void crawlLatestStockNews() {
 		crawlNews(FINVIZ_STOCK.getUrl(), FINVIZ_STOCK.getCategory());
 	}
-  
-  // 시장 뉴스 크롤링
+
 	@Override
-	@Scheduled(fixedRate = 60000)
+//	@Scheduled(fixedRate = 60000)
 	public void crawlLatestMarketNews() {
 		crawlNews(FINVIZ_MARKET.getUrl(), FINVIZ_MARKET.getCategory());
 	}
@@ -58,25 +58,15 @@ public class FinvizCrawlerService implements NewsCrawlerService {
 		}
 	}
 
-	// TODO : 뉴스 와 블로그 정보까지 전부 긁어옴
-	// TODO : 뉴스 정보만 긁어오게 변경해야할수도있음
 	private List<Article> extractArticles(Document document) {
 		Elements rows = document.select("tr.styled-row");
 		List<Article> articles = new ArrayList<>();
 
 		for (Element row : rows) {
 			try {
-				String title = row.selectFirst("td.news_link-cell a").text();
-				String publishedAt = row.select("td.news_date-cell").text();
-				String url = row.select("td.news_link-cell a").attr("abs:href");
-
-        //TODO : STOCK 과 MARKET의 발행시간 표기법이 다름
-				if (!title.isEmpty() && !publishedAt.isEmpty() && !url.isEmpty()) {
-					articles.add(Article.builder()
-							.title(title)
-							.url(url)
-							.publishedAt(publishedAt)
-							.build());
+				Article article = extractArticleFromRow(row);
+				if (article != null) {
+					articles.add(article);
 				}
 			} catch (Exception e) {
 				log.warn("기사 추출 실패", e);
@@ -86,16 +76,57 @@ public class FinvizCrawlerService implements NewsCrawlerService {
 		return articles;
 	}
 
-	//발행타입이 HH:mm 타입인지 아니라면 지난날의 기사
-	private boolean isTimeFormat(String publishedAt) {
-		try {
-			SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm");
-			timeFormat.setLenient(false);
-			timeFormat.parse(publishedAt);
-			return true;
-		} catch (ParseException e) {
-			log.warn("시간 형식 파싱 실패: {}", publishedAt);
-			return false;
+	private Article extractArticleFromRow(Element row) {
+		String title = row.selectFirst("td.news_link-cell a").text();
+		String publishedAt = row.select("td.news_date-cell").text();
+		String url = row.select("td.news_link-cell a").attr("abs:href");
+
+		if (title.isEmpty() || publishedAt.isEmpty() || url.isEmpty()) {
+			return null;
 		}
+
+		LocalDateTime articleDateTime = parsePublishedAt(publishedAt);
+		if (articleDateTime == null) {
+			return null; // 발행 시간이 유효하지 않으면 무시
+		}
+
+		// 오늘 날짜의 기사만 반환
+		if (isToday(articleDateTime)) {
+			return Article.builder()
+					.title(title)
+					.url(url)
+					.publishedAt(articleDateTime)
+					.build();
+		}
+
+		return null;
+	}
+
+	private LocalDateTime parsePublishedAt(String publishedAt) {
+		try {
+			if (isRelativeTimeFormat(publishedAt)) {
+				return timeConverter.convertUsRelativeTimeToAbsoluteTime(publishedAt);
+			}
+
+			if (isAbsoluteTimeFormat(publishedAt)) {
+				return timeConverter.usTimeToFormattedUSDate(publishedAt);
+			}
+		} catch (Exception e) {
+			log.warn("발행 시간 파싱 실패: {}", publishedAt, e);
+		}
+
+		return null;
+	}
+
+	private boolean isRelativeTimeFormat(String time) {
+		return time.matches("\\d+\\s+(min|hour|day)");
+	}
+
+	private boolean isAbsoluteTimeFormat(String time) {
+		return time.matches("\\d{1,2}:\\d{2}\\s*(AM|PM)");
+	}
+
+	private boolean isToday(LocalDateTime dateTime) {
+		return dateTime.toLocalDate().equals(LocalDate.now(ZoneId.of(TimeZones.US.getZoneId())));
 	}
 }
