@@ -1,5 +1,6 @@
 package com.hnptech.stocknewscuckoo.article.controller;
 
+import com.hnptech.stocknewscuckoo.article.dto.response.ArticleResponse;
 import com.hnptech.stocknewscuckoo.article.model.Article;
 import com.hnptech.stocknewscuckoo.article.service.ArticleService;
 import java.util.List;
@@ -17,7 +18,7 @@ public class ArticleController {
 	private final ArticleService articleService;
 
 	@GetMapping("/latest")
-	public ResponseEntity<List<Article>> getLatestArticles() {
+	public ResponseEntity<List<ArticleResponse>> getLatestArticles() {
 		return ResponseEntity.ok(articleService.getLatestArticles());
 	}
 
