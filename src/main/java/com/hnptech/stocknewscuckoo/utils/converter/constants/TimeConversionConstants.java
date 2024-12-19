@@ -1,4 +1,4 @@
-package com.hnptech.stocknewscuckoo.notification.converter.constants;
+package com.hnptech.stocknewscuckoo.utils.converter.constants;
 
 
 import java.time.format.DateTimeFormatter;
