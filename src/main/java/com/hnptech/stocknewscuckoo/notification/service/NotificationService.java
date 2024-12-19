@@ -1,6 +1,6 @@
 package com.hnptech.stocknewscuckoo.notification.service;
 
-import com.hnptech.stocknewscuckoo.crawler.model.Article;
+import com.hnptech.stocknewscuckoo.article.model.Article;
 
 public interface NotificationService {
 
