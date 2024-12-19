@@ -1,10 +1,9 @@
-package com.hnptech.stocknewscuckoo.crawler.model;
+package com.hnptech.stocknewscuckoo.article.model;
 
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,18 +15,15 @@ import lombok.NoArgsConstructor;
 public class Article {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private String url;
 
 	private String title;
 
-	private String url;
-
 	// 미국 시간 기준
-	private String publishedAt;
+	private LocalDateTime publishedAt;
 
 	@Builder
-	public Article(String title, String url, String publishedAt) {
+	public Article(String title, String url, LocalDateTime publishedAt) {
 		this.title = title;
 		this.url = url;
 		this.publishedAt = publishedAt;
