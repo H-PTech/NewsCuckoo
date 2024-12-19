@@ -1,5 +1,8 @@
 package com.hnptech.stocknewscuckoo.utils.converter.constants;
 
+import lombok.Getter;
+
+@Getter
 public enum TimeUnits {
     MINUTES("min"),
     HOURS("hour"),
@@ -9,10 +12,6 @@ public enum TimeUnits {
 
     TimeUnits(String unit) {
         this.unit = unit;
-    }
-
-    public String getUnit() {
-        return unit;
     }
 
     public static TimeUnits fromString(String unit) {
