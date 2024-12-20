@@ -22,6 +22,7 @@ public class TimeConverterImpl implements TimeConverter {
 
 		return koreaTime.toLocalDateTime();
 	}
+
 	@Override
 	public LocalDateTime usTimeToFormattedUSDate(String usTime) {
 		try {
@@ -55,5 +56,4 @@ public class TimeConverterImpl implements TimeConverter {
 			case DAYS -> now.minusDays(timeValue);
 		};
 	}
-
 }
