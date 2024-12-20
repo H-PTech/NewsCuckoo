@@ -45,6 +45,9 @@ dependencies {
 	// HTML 파싱
 	implementation 'org.jsoup:jsoup:1.18.3'
 
+	//테스트 코드 로그용 롬복
+	testImplementation 'org.projectlombok:lombok'
+
 }
 
 dependencyManagement {
