@@ -4,6 +4,7 @@ import com.hnptech.stocknewscuckoo.utils.converter.service.TimeConverter;
 import com.hnptech.stocknewscuckoo.article.model.Article;
 import com.hnptech.stocknewscuckoo.notification.model.response.ConvertedNews;
 import com.hnptech.stocknewscuckoo.notification.notifier.Notifier;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class NotificationServiceImpl implements NotificationService {
 
-	private final Notifier notifier;
+	private final List<Notifier> notifiers;
 	private final TimeConverter timeConverter;
 
 	// TODO : 한글 제목 변환
@@ -24,6 +25,8 @@ public class NotificationServiceImpl implements NotificationService {
 				.koreanTitle("TODO")
 				.build();
 
-		notifier.sendNotification(convertedNews.toString());
+		for (Notifier notifier : notifiers) {
+			notifier.sendNotification(convertedNews.toString());
+		}
 	}
 }
