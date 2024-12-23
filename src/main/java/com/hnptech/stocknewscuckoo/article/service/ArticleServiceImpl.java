@@ -4,6 +4,9 @@ import com.hnptech.stocknewscuckoo.article.dto.response.ArticleResponse;
 import com.hnptech.stocknewscuckoo.article.mapper.ArticleMapper;
 import com.hnptech.stocknewscuckoo.article.model.Article;
 import com.hnptech.stocknewscuckoo.article.repository.ArticleRepository;
+import com.hnptech.stocknewscuckoo.events.article.ArticleEventPublisher;
+import com.hnptech.stocknewscuckoo.events.common.Event;
+import com.hnptech.stocknewscuckoo.events.crawler.CrawlerFetchedEvent;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,19 +17,22 @@ public class ArticleServiceImpl implements ArticleService {
 
 	private final ArticleRepository articleRepository;
 	private final ArticleMapper articleMapper;
+	private final ArticleEventPublisher articleEventPublisher;
 	@Override
 	public List<ArticleResponse> getLatestArticles() {
 		 return articleMapper.toResponseList(articleRepository.findTop20ByOrderByPublishedAtDesc());
 	}
 
 	@Override
-	public void saveArticles(List<Article> articles) {
-		List<Article> notDuplicatedArticles = articles.stream()
+	public void saveArticles(CrawlerFetchedEvent articles) {
+
+		//중복검사
+		List<Article> notDuplicatedArticles = articles.articles().stream()
 				.filter(article -> !articleRepository.existsById(article.getUrl()))
 				.toList();
 
+		articleEventPublisher.publishArticleCreated(notDuplicatedArticles);
 		articleRepository.saveAll(notDuplicatedArticles);
 	}
 
-	//TODO : 중복 기사 데이터 확인 최적화, 상수 관리, Get 쿼리 최적화
 }
