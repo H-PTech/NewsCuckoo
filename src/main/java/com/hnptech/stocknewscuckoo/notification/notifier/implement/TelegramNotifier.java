@@ -1,5 +1,7 @@
-package com.hnptech.stocknewscuckoo.notification.notifier;
+package com.hnptech.stocknewscuckoo.notification.notifier.implement;
 
+import com.hnptech.stocknewscuckoo.notification.dto.response.NotificationItem;
+import com.hnptech.stocknewscuckoo.notification.notifier.Notifier;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -53,10 +55,10 @@ public class TelegramNotifier implements SpringLongPollingBot,
 	}
 
 	@Override
-	public void sendNotification(String message) {
+	public void sendNotification(NotificationItem request) {
 		SendMessage sendMessage = SendMessage.builder()
 				.chatId(chatId)
-				.text(message)
+				.text(request.toString())
 				.build();
 		try {
 			telegramClient.execute(sendMessage);
@@ -67,6 +69,6 @@ public class TelegramNotifier implements SpringLongPollingBot,
 
 	@AfterBotRegistration
 	public void afterRegistration(BotSession botSession) {
-		System.out.println("Registered bot running state is: " + botSession.isRunning());
+		log.info("Registered bot running state is: " + botSession.isRunning());
 	}
 }

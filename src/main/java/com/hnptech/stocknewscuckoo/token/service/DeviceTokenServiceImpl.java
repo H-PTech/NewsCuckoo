@@ -1,8 +1,11 @@
 package com.hnptech.stocknewscuckoo.token.service;
 
+import com.hnptech.stocknewscuckoo.token.dto.DeviceTokenItem;
 import com.hnptech.stocknewscuckoo.token.dto.DeviceTokenRequest;
+import com.hnptech.stocknewscuckoo.token.dto.DeviceTokenResponse;
 import com.hnptech.stocknewscuckoo.token.model.DeviceToken;
 import com.hnptech.stocknewscuckoo.token.repository.DeviceTokenRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,4 +20,16 @@ public class DeviceTokenServiceImpl implements DeviceTokenService {
 		repository.save(DeviceToken.builder().deviceToken(request.getDeviceToken()).
 				build());
 	}
+
+	@Override
+	public List<DeviceTokenItem> getAllTokens() {
+		List<DeviceToken> deviceTokens = repository.findAll();
+
+		return deviceTokens.stream()
+				.map(deviceToken -> DeviceTokenItem.builder()
+						.deviceToken(deviceToken.getDeviceToken())
+						.build())
+				.toList();
+	}
+
 }

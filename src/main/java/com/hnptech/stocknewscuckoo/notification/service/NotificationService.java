@@ -1,8 +1,8 @@
 package com.hnptech.stocknewscuckoo.notification.service;
 
-import com.hnptech.stocknewscuckoo.article.model.Article;
+import com.hnptech.stocknewscuckoo.events.article.ArticleCreatedEvent;
 
 public interface NotificationService {
 
-	void sendNotification(Article article);
+	void sendNotification(ArticleCreatedEvent event);
 }

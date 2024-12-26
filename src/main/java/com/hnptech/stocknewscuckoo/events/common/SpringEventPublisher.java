@@ -1,7 +1,5 @@
-package com.hnptech.stocknewscuckoo.events.publisher;
+package com.hnptech.stocknewscuckoo.events.common;
 
-import com.hnptech.stocknewscuckoo.events.common.Event;
-import com.hnptech.stocknewscuckoo.events.common.EventPublisher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;

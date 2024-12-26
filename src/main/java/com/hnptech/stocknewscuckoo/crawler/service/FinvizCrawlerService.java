@@ -5,6 +5,7 @@ import static com.hnptech.stocknewscuckoo.crawler.constants.NewsSource.FINVIZ_ST
 
 import com.hnptech.stocknewscuckoo.article.model.Article;
 import com.hnptech.stocknewscuckoo.article.service.ArticleService;
+import com.hnptech.stocknewscuckoo.events.crawler.CrawlerEventPublisher;
 import com.hnptech.stocknewscuckoo.utils.converter.constants.TimeZones;
 import com.hnptech.stocknewscuckoo.utils.converter.service.TimeConverter;
 import java.time.LocalDate;
@@ -26,8 +27,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class FinvizCrawlerService implements NewsCrawlerService {
 
-	private final ArticleService articleService;
 	private final TimeConverter timeConverter;
+	private final CrawlerEventPublisher publisher;
+
+	//TODO : 데이터베이스 카테고리로 구별할껀지 따로 데이터베이스를 만들건지 구별
 
 	@Override
 	@Scheduled(fixedRate = 60000)
@@ -36,22 +39,16 @@ public class FinvizCrawlerService implements NewsCrawlerService {
 	}
 
 	@Override
-//	@Scheduled(fixedRate = 60000)
+	@Scheduled(fixedRate = 60000)
 	public void crawlLatestMarketNews() {
 		crawlNews(FINVIZ_MARKET.getUrl(), FINVIZ_MARKET.getCategory());
 	}
 
 	private void crawlNews(String url, String newsType) {
-		log.info("{} 뉴스 크롤링 시작", newsType);
 		try {
 			Document document = Jsoup.connect(url).get();
 			List<Article> articles = extractArticles(document);
-
-			articles.forEach(article -> {
-				log.info("제목: {} | 발행 시간: {} | URL: {}", article.getTitle(), article.getPublishedAt(), article.getUrl());
-			});
-
-			articleService.saveArticles(articles);
+			publisher.publishFetchedEvent(articles);
 
 		} catch (Exception e) {
 			log.error("Finviz {} 뉴스페이지 Fetch 실패", newsType, e);
@@ -69,7 +66,7 @@ public class FinvizCrawlerService implements NewsCrawlerService {
 					articles.add(article);
 				}
 			} catch (Exception e) {
-				log.warn("기사 추출 실패", e);
+				log.error("기사 추출 실패", e);
 			}
 		}
 

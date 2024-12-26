@@ -48,6 +48,9 @@ dependencies {
 	//테스트 코드 로그용 롬복
 	testImplementation 'org.projectlombok:lombok'
 
+	//FCM
+	implementation 'com.google.firebase:firebase-admin:9.4.2'
+
 }
 
 dependencyManagement {
