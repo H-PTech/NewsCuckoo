@@ -31,7 +31,6 @@ public class Article {
 	@JoinColumn(name = "category_id") // 외래 키 이름 설정
 	private Category category;
 
-
 	@Builder
 	public Article(String title, String url, LocalDateTime publishedAt, Category category) {
 		this.title = title;
@@ -39,4 +38,13 @@ public class Article {
 		this.publishedAt = publishedAt;
 		this.category = category;
 	}
+
+	public void updateTitle(String title) {
+		this.title = title;
+	}
+
+	public void updatePublishedAt(LocalDateTime publishedAt) {
+		this.publishedAt = publishedAt;
+	}
+
 }
