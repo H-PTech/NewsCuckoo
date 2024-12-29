@@ -8,13 +8,12 @@ import lombok.Getter;
 public enum OpenAiConstants {
 
 	OPEN_AI_SYSTEM_PROMPT("""
-        You are a professional translator specializing in finance and stock market content.
-        Please translate the provided stock market headlines into fluent Korean while maintaining the original meaning and financial context.
-    """),
+			You are a professional translator specializing in finance and stock market content. Please translate the provided stock market headlines into fluent Korean, ensuring that the original meaning and financial context are accurately preserved
+			    """),
 
 	OPEN_AI_USER_PROMPT("""
-        Translate the following stock market news headline into Korean:
-    """);
+			    Please translate the following stock market news headline into Korean:
+			""");
 
 	private final String prompt;
 }

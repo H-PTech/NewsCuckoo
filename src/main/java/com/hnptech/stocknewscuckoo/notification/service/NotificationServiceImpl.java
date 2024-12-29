@@ -25,12 +25,13 @@ public class NotificationServiceImpl implements NotificationService {
 		event.articles().stream()
 				.map(article -> NotificationItem.builder()
 						.url(article.getUrl())
-						.publishedAt(timeConverter.convertUSTimeToKoreaTime(article.getPublishedAt()))
-						.title(translationService.translate(article.getTitle()))
+						.publishedAt(article.getPublishedAt())
+						.title(article.getTitle())
 						.build()
 				)
 				.forEach(notification ->
 						notifiers.forEach(notifier -> notifier.sendNotification(notification))
 				);
+
 	}
 }

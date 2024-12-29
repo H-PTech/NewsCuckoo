@@ -1,5 +1,6 @@
 package com.hnptech.stocknewscuckoo.token.controller;
 
+import com.hnptech.stocknewscuckoo.common.result.ApiResult;
 import com.hnptech.stocknewscuckoo.token.dto.DeviceTokenRequest;
 import com.hnptech.stocknewscuckoo.token.service.DeviceTokenService;
 import lombok.RequiredArgsConstructor;
@@ -14,11 +15,10 @@ public class DeviceTokenController {
 
 	private final DeviceTokenService deviceTokenService;
 
-
-	//TODO : response 그리고 저장
 	@PostMapping
-	public void saveToken(DeviceTokenRequest request) {
+	public ApiResult<Void> saveToken(DeviceTokenRequest request) {
 		deviceTokenService.saveDeviceToken(request);
+		return ApiResult.success(null);
 	}
 
 }

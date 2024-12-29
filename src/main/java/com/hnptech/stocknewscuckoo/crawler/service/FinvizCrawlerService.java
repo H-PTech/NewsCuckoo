@@ -4,7 +4,6 @@ import static com.hnptech.stocknewscuckoo.crawler.constants.NewsSource.FINVIZ_MA
 import static com.hnptech.stocknewscuckoo.crawler.constants.NewsSource.FINVIZ_STOCK;
 
 import com.hnptech.stocknewscuckoo.article.model.Article;
-import com.hnptech.stocknewscuckoo.article.service.ArticleService;
 import com.hnptech.stocknewscuckoo.events.crawler.CrawlerEventPublisher;
 import com.hnptech.stocknewscuckoo.utils.converter.constants.TimeZones;
 import com.hnptech.stocknewscuckoo.utils.converter.service.TimeConverter;
