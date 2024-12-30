@@ -62,3 +62,8 @@ dependencyManagement {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+jar{
+	exclude 'application-develop.yml'
+	exclude 'application.yml'
+}
